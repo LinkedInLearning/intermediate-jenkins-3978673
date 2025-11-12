@@ -1,5 +1,5 @@
-# COURSENAME
-This is the repository for the LinkedIn Learning course `course-name`. The full course is available from [LinkedIn Learning][lil-course-url].
+# Intermediate Jenkins: Automate, Integrate, and Secure CI/CD Workflows at Scale
+This is the repository for the LinkedIn Learning course `Intermediate Jenkins: Automate, Integrate, and Secure CI/CD Workflows at Scale`. The full course is available from [LinkedIn Learning][lil-course-url].
 
 ![lil-thumbnail-url]
 
