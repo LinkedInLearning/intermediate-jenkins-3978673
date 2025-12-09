@@ -1,4 +1,4 @@
-Description: An EC2 instance running Jenkins CI Server as a Linux service on Amazon Linux 2023
+Description: An EC2 instance running Jenkins as a service on Amazon Linux 2023
 
 Parameters:
   InstanceType:
@@ -182,9 +182,12 @@ Resources:
       InstanceId: !Ref Server
 
 Outputs:
-  URL:
+  JenkinsURL:
     Value: !Sub 'http://${Server.PublicDnsName}/'
-    Description: Application URL
-  AdminPassword:
-    Value: 'cat /home/ec2-user/initialAdminPassword'
-    Description: Connect to the server and run this command to get the initial admin password
+    Description: Follow this URL to accesss the Jenkins web interface
+  TerminalURL:
+    Value: !Sub "https://${AWS::Region}.console.aws.amazon.com/systems-manager/session-manager/${Server}?region=${AWS::Region}"
+    Description: Follow this URL to open a terminal on the server where Jenkins is running
+  InitialAdminPassword:
+    Value: 'sudo cat /root/initialAdminPassword'
+    Description: Copy this command and run it in the terminal to get the initial admin password
