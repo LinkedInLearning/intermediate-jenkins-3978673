@@ -33,40 +33,6 @@ apt-get -y install \
 
 apt-get -y install jenkins
 
-# configure jenkins
-echo "# $(date) Configure Jenkins..."
-
-## skip the installation wizard at startup
-echo "# $(date) Skip the installation wizard on first boot..."
-echo "JAVA_ARGS=\"-Djenkins.install.runSetupWizard=false\"" >> /etc/default/jenkins
-
-## download the list of plugins
-echo "# $(date) Download the list of plugins..."
-wget https://raw.githubusercontent.com/jenkinsci/jenkins/master/core/src/main/resources/jenkins/install/platform-plugins.json
-
-## get the suggested plugins
-echo "# $(date) Use the keyword 'suggest' to find the suggested plugins in the list..."
-grep suggest platform-plugins.json | cut -d\" -f 4 | grep -v name | tee suggested-plugins.txt
-
-## download the plugin installation tool
-plugin_manager_version=2.13.2
-echo "# $(date) Download the plugin installation tool version ${plugin_manager_version}..."
-wget https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/${plugin_manager_version}/jenkins-plugin-manager-${plugin_manager_version}.jar
-
-## run the plugin installation tool
-echo "# $(date) Run the plugin installation tool..."
-/usr/bin/java -jar ./jenkins-plugin-manager-${plugin_manager_version}.jar \
-	--verbose \
-    --skip-failed-plugins \
-    --plugin-download-directory=/var/lib/jenkins/plugins \
-    --plugin-file=./suggested-plugins.txt | tee /var/log/plugin-installation.log
-
-## because the plugin installation tool runs as root, ownership on
-## the plugin dir needs to be changed back to jenkins:jenkins
-## otherwise, jenkins won't be able to install the plugins
-echo "# $(date) Update the permissions on the plugins directory..."
-chown -R jenkins:jenkins /var/lib/jenkins/plugins
-
 # configure nginx
 echo "# $(date) Configure NGINX..."
 unlink /etc/nginx/sites-enabled/default
@@ -123,4 +89,3 @@ echo "    Username: admin"
 echo "    Password: $(cat /var/lib/jenkins/secrets/initialAdminPassword)"
 echo
 echo
-
