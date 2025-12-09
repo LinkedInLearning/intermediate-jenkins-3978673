@@ -182,12 +182,12 @@ Resources:
       InstanceId: !Ref Server
 
 Outputs:
-  JenkinsURL:
-    Value: !Sub 'http://${Server.PublicDnsName}/'
-    Description: Follow this URL to accesss the Jenkins web interface
+  InitialAdminPassword:
+    Value: 'sudo cat /var/lib/jenkins/secrets/initialAdminPassword'
+    Description: Copy this command and run it in the terminal to get the initial admin password
   TerminalURL:
     Value: !Sub "https://${AWS::Region}.console.aws.amazon.com/systems-manager/session-manager/${Server}?region=${AWS::Region}"
     Description: Follow this URL to open a terminal on the server where Jenkins is running
-  InitialAdminPassword:
-    Value: 'sudo cat /root/initialAdminPassword'
-    Description: Copy this command and run it in the terminal to get the initial admin password
+  JenkinsURL:
+    Value: !Sub 'http://${Server.PublicDnsName}/'
+    Description: Follow this URL to accesss the Jenkins web interface
