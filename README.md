@@ -46,3 +46,7 @@ Check out my other courses on [LinkedIn Learning](https://www.linkedin.com/learn
 [lil-course-url]: https://www.linkedin.com/learning/
 [lil-thumbnail-url]: https://media.licdn.com/dms/image/v2/D4E0DAQG0eDHsyOSqTA/learning-public-crop_675_1200/B4EZVdqqdwHUAY-/0/1741033220778?e=2147483647&v=beta&t=FxUDo6FA8W8CiFROwqfZKL_mzQhYx9loYLfjN-LNjgA
 
+<!-- FooterStart -->
+---
+[00_01 From Code to Production With Jenkins →](ch0_introduction/00_01_from_code_to_production_with_jenkins/README.md)
+<!-- FooterEnd -->
