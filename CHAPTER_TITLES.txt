@@ -1,33 +1,33 @@
 00_01 From Code to Production With Jenkins
 00_02 Deploy a Jenkins Server
-02_01 Create a Pipeline Project
-02_02 Create a Declarative Pipeline
-02_03 Use the Pipeline Snippet Generator
-02_04 Use Variables In a Pipeline
-02_05 Parameterize a Pipeline
-02_06 Use Conditional Expressions and Manual approvals
-02_07 Challenge: Develop a Parameterized Pipeline
-02_08 Solution: Develop a Parameterized Pipeline
-03_01 Pipeline as Code With Jenkinsfile
-03_02 Connect Jenkins to Github
-03_03 Run Scripts From the Pipeline
-03_04 Add a Status Badge to Markdown Files
-03_05 Challenge: Connect Jenkins to Github
-03_06 Solution: Connect Jenkins to Github
-04_01 Distribute Builds With agents
-04_02 Add an SSH agent to Jenkins
-04_03 Add Docker agents to Jenkins
-04_04 Challenge: Improve a Docker agent Pipeline
-04_05 Solution: Improve a Docker agent Pipeline
-05_01 Artifacts and Fingerprinting
-05_02 Publish Test Results and Code Coverage Reports
-05_03 Use Test Results to Stop a Build
-05_04 TBD: Use an External Test Runner and/Or AI tool
-05_05 Challenge: Create artifacts and Reports
-05_06 Solution: Create artifacts and Reports
-06_01 Secure Jenkins With User accounts
-06_02 Configure Project-Based Permissions
-06_03 Use Secrets and Credentials
-06_04 Challenge: Configure Users and Permissions
-06_05 Solution: Configure Users and Permissions
-07_01 Next Steps
+01_01 Create a Pipeline Project
+01_02 Create a Declarative Pipeline
+01_03 Use the Pipeline Snippet Generator
+01_04 Use Variables In a Pipeline
+01_05 Parameterize a Pipeline
+01_06 Use Conditional Expressions and Manual approvals
+01_07 Challenge: Develop a Parameterized Pipeline
+01_08 Solution: Develop a Parameterized Pipeline
+02_01 Pipeline as Code With Jenkinsfile
+02_02 Connect Jenkins to Github
+02_03 Run Scripts From the Pipeline
+02_04 Add a Status Badge to Markdown Files
+02_05 Challenge: Connect Jenkins to Github
+02_06 Solution: Connect Jenkins to Github
+03_01 Distribute Builds With agents
+03_02 Add an SSH agent to Jenkins
+03_03 Add Docker agents to Jenkins
+03_04 Challenge: Improve a Docker agent Pipeline
+03_05 Solution: Improve a Docker agent Pipeline
+04_01 Artifacts and Fingerprinting
+04_02 Publish Test Results and Code Coverage Reports
+04_03 Use Test Results to Stop a Build
+04_04 TBD: Use an External Test Runner and/Or AI tool
+04_05 Challenge: Create artifacts and Reports
+04_06 Solution: Create artifacts and Reports
+05_01 Secure Jenkins With User accounts
+05_02 Configure Project-Based Permissions
+05_03 Use Secrets and Credentials
+05_04 Challenge: Configure Users and Permissions
+05_05 Solution: Configure Users and Permissions
+06_01 Next Steps
