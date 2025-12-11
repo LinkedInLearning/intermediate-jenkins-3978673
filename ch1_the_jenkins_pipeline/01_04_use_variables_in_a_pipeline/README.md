@@ -62,7 +62,7 @@ To access the currentBuild properties, the values are preceded by `currentBuild`
 
 A few examples of current build variables are the start time, the duration of the build, and the current status of the build.
 
-```
+```groovy
 currentBuild.duration
 currentBuild.startTimeInMillis
 currentBuild.currentResult

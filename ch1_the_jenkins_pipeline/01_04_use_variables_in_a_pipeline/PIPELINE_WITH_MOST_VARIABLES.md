@@ -70,7 +70,7 @@ pipeline {
 
 For example, the following variables are only available to jobs that interact with a revision control system:
 
-```
+```bash
 BRANCH_NAME
 BRANCH_IS_PRIMARY
 CHANGE_ID
