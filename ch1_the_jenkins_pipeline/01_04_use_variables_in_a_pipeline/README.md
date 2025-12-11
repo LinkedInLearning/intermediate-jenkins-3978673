@@ -70,11 +70,11 @@ currentBuild.currentResult
 
 Just like environment variables, these values need to be preceded by a dollar sign if they’re used in strings.
 
-## Bonus Shenanigans: Print "most" of the default global variables
+## Bonus Shenanigans: Print most of the default global variables
 
-View the following file for a bonus pipeline that prints "most" of the global variables _and_ some current build variables too!
+View the following file for a bonus pipeline that prints most of the global variables _and_ some current build variables too!
 
-[PIPELINE_WITH_MOST_VARIABLES](PIPELINE_WITH_MOST_VARIABLES.md)
+[Bonus pipeline that displays most of the default global variables](PIPELINE_WITH_MOST_VARIABLES.md)
 
 <!-- FooterStart -->
 ---

@@ -66,7 +66,7 @@ pipeline {
 }
 ```
 
-"Most" is the case because not all global variables are always available.
+"Most variables" is the case because not all global variables are always available.
 
 For example, the following variables are only available to jobs that interact with a version control system:
 
