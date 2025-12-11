@@ -20,7 +20,7 @@ Run the job and examine the output.
 pipeline {
     agent any
     // agent { label ‘windows-11’ }
-    // agent { docker { image 'maven:3.9-amazoncorretto-17-debian' } }
+    // agent { dockerContainer 'maven:latest' }
     // agent none
     stages {
         stage('Build') {
@@ -43,9 +43,8 @@ pipeline {
         stage('More Steps') {
             steps {
                 echo 'More steps to use...'
-                sh 'ls -ltr'
+                sh 'ls -ltr > report.txt'
                 git url: 'https://github.com/octocat/Hello-World.git'
-                archiveArtifacts artifacts: 'README'
             }
         }
     }
