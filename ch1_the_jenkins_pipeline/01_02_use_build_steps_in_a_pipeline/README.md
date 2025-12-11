@@ -1,4 +1,4 @@
-# 01_02 Create a Pipeline From Scratch
+# 01_02 Use Build Steps in a Pipeline
 
 Jenkins pipelines start with the word `pipeline` followed by curly braces and configuration details.
 
@@ -10,21 +10,19 @@ A pipeline configuration has three required sections.
 - `stages`
 - at least one `stage` and at least one `step`
 
-## A multi-stage pipeline
+## Using Build Steps
 
-Create a pipeline job and paste in the following code to create a multi-stage pipeline.
+Create a pipeline job and paste in the following pipeline configuration.
 
 Run the job and examine the output.
 
 ```Jenkinsfile
 pipeline {
     agent any
+    // agent { label ‘windows-11’ }
+    // agent { docker { image 'maven:3.9-amazoncorretto-17-debian' } }
+    // agent none
     stages {
-        stage('Requirements') {
-            steps {
-                echo 'Getting Requirements....'
-            }
-        }
         stage('Build') {
             steps {
                 echo 'Building....'
@@ -37,9 +35,17 @@ pipeline {
                 echo 'Testing..3'
             }
         }
-        stage('Report') {
+        stage('Deploy') {
             steps {
-                echo 'Reporting....'
+                echo 'Deploying....'
+            }
+        }
+        stage('More Steps') {
+            steps {
+                echo 'More steps to use...'
+                sh 'ls -ltr'
+                git url: 'https://github.com/octocat/Hello-World.git'
+                archiveArtifacts artifacts: 'README'
             }
         }
     }

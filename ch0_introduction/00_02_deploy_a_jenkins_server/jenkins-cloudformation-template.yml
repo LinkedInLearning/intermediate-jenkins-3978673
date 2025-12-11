@@ -93,6 +93,7 @@ Resources:
         install_apps:
           packages:
             yum:
+              git: []
               docker: []
               java-21-amazon-corretto: []
               python3-pip: []

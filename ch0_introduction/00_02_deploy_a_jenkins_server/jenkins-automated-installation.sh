@@ -22,6 +22,7 @@ apt update
 apt-get -y upgrade
 
 apt-get -y install \
+    git \
     openjdk-21-jdk \
     nginx \
     ca-certificates \
