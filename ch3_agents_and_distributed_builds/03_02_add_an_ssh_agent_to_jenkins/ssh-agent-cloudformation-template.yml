@@ -1,0 +1,145 @@
+Description: EC2 build server for Jenkins with SSH access from Jenkins controller
+
+Parameters:
+  JenkinsStackName:
+    Type: String
+    Description: Name of the CloudFormation stack that deployed the Jenkins server
+    ConstraintDescription: Must be an existing CloudFormation stack name
+
+  InstanceType:
+    Type: String
+    Description: The size to use for the EC2 instance
+    Default: t3.small
+    AllowedValues:
+      - t3.small
+      - t3.medium
+      - t3.large
+      - t3.xlarge
+      - t3.2xlarge
+    ConstraintDescription: Must be a valid EC2 instance type.
+
+Resources:
+  # IAM Role for the build server
+  BuildServerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ec2.amazonaws.com]
+            Action: ['sts:AssumeRole']
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  BuildServerProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles: [!Ref BuildServerRole]
+
+  # Key Pair for SSH access
+  BuildServerKeyPair:
+    Type: AWS::EC2::KeyPair
+    Properties:
+      KeyName: !Sub "${AWS::StackName}-keypair"
+      KeyType: ed25519
+      KeyFormat: pem
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-keypair"
+
+  # Security Group for the build server
+  BuildServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH from Jenkins controller
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          SourceSecurityGroupId:
+            Fn::ImportValue: !Sub "${JenkinsStackName}-SecurityGroupId"
+          Description: SSH from jenkins controller
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-sg"
+
+  # EC2 Instance
+  BuildServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: "{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64}}"
+      IamInstanceProfile: !Ref BuildServerProfile
+      SecurityGroups:
+        - !Ref BuildServerSecurityGroup
+      KeyName: !Ref BuildServerKeyPair
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}"
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          set -eux
+          # Log the installation output
+          exec > >(tee /var/log/user-data.log) 2>&1
+          # Unmount /tmp if already mounted
+          umount /tmp || true
+          # Create the /tmp directory if it doesn't exist
+          mkdir -p /tmp
+          # Backup /etc/fstab
+          cp /etc/fstab /etc/fstab-$(date +%s).txt
+          # Remove any existing /tmp entry (just in case)
+          sed -i '/\/tmp/d' /etc/fstab
+          # Add a new tmpfs entry for /tmp with 4G size
+          echo "tmpfs /tmp tmpfs defaults,size=4G 0 0" >> /etc/fstab
+          # Mount all filesystems in fstab (including /tmp)
+          mount -a
+          # Set correct permissions for /tmp
+          chmod 1777 /tmp
+          # install java and python
+          dnf install --assumeyes \
+              git \
+              java-21-amazon-corretto-headless \
+              python3.12.x86_64 \
+              python3.12-pip
+          # install development tools
+          dnf groupinstall -y "Development Tools"
+          /usr/bin/pip3.12 install virtualenv
+          reboot now
+
+Outputs:
+  BuildServerInstanceId:
+    Value: !Ref BuildServer
+    Description: Instance ID of the build server
+
+  BuildServerPrivateIP:
+    Value: !GetAtt BuildServer.PrivateIp
+    Description: Private IP address of the build server
+
+  BuildServerPublicIP:
+    Value: !GetAtt BuildServer.PublicIp
+    Description: Public IP address of the build server
+
+  PrivateKeyParameterStore:
+    Value: !Sub "/ec2/keypair/${BuildServerKeyPair.KeyPairId}"
+    Description: Path to the private key in AWS Systems Manager Parameter Store
+
+  PrivateKeyConsoleURL:
+    Value: !Sub "https://${AWS::Region}.console.aws.amazon.com/systems-manager/parameters/ec2/keypair/${BuildServerKeyPair.KeyPairId}/description?region=${AWS::Region}"
+    Description: Direct link to view the private key in Parameter Store console
+
+  TerminalURL:
+    Value: !Sub "https://${AWS::Region}.console.aws.amazon.com/systems-manager/session-manager/${BuildServer}?region=${AWS::Region}"
+    Description: Follow this URL to open a terminal on the build server
+
+  SSHConnectionCommand:
+    Value: !Sub |
+      # First, retrieve the private key from Parameter Store and save it:
+      aws ssm get-parameter --name /ec2/keypair/${BuildServerKeyPair.KeyPairId} --with-decryption --query Parameter.Value --output text > jenkins-build-server.pem
+      chmod 400 jenkins-build-server.pem
+      # Then connect via SSH:
+      ssh -i jenkins-build-server.pem ec2-user@${BuildServer.PublicIp}
+    Description: Commands to retrieve the private key and connect to the build server via SSH

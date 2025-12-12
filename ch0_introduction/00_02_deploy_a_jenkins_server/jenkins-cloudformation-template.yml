@@ -192,3 +192,8 @@ Outputs:
   JenkinsURL:
     Value: !Sub 'http://${Server.PublicDnsName}/'
     Description: Follow this URL to accesss the Jenkins web interface
+  SecurityGroupId:
+    Value: !GetAtt SecurityGroup.GroupId
+    Description: Security Group ID of the Jenkins server
+    Export:
+      Name: !Sub "${AWS::StackName}-SecurityGroupId"
