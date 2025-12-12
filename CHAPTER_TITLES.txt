@@ -11,9 +11,8 @@
 02_01 Pipeline as Code With Jenkinsfile
 02_02 Connect Jenkins to Github
 02_03 Run Scripts From the Pipeline
-02_04 Add a Status Badge to Markdown Files
-02_05 Challenge: Connect Jenkins to Github
-02_06 Solution: Connect Jenkins to Github
+02_04 Challenge: Connect Jenkins to Github
+02_05 Solution: Connect Jenkins to Github
 03_01 Distribute Builds With agents
 03_02 Add an SSH agent to Jenkins
 03_03 Add Docker agents to Jenkins
