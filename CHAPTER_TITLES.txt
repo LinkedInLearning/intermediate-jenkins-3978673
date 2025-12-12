@@ -13,11 +13,11 @@
 02_03 Run Scripts From the Pipeline
 02_04 Challenge: Connect Jenkins to Github
 02_05 Solution: Connect Jenkins to Github
-03_01 Distribute Builds With agents
+03_01 Distribute Builds With Agents
 03_02 Add an SSH agent to Jenkins
-03_03 Add Docker agents to Jenkins
-03_04 Challenge: Improve a Docker agent Pipeline
-03_05 Solution: Improve a Docker agent Pipeline
+03_03 Add Docker Agents to Jenkins
+03_04 Challenge: Improve a Docker Agent Pipeline
+03_05 Solution: Improve a Docker Agent Pipeline
 04_01 Artifacts and Fingerprinting
 04_02 Publish Test Results and Code Coverage Reports
 04_03 Use Test Results to Stop a Build
