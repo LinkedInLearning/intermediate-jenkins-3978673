@@ -157,6 +157,9 @@ Resources:
           systemctl enable jenkins
           systemctl start jenkins
 
+          echo "# $(date) Add jenkins user to the docker group..."
+          usermod -aG docker jenkins
+
           # Wait for Jenkins to start and generate initial admin password
           echo "# $(date) Waiting for Jenkins to initialize..."
           while [ ! -f /var/lib/jenkins/secrets/initialAdminPassword ]; do

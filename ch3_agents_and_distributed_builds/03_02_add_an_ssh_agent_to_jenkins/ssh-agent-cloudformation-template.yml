@@ -127,7 +127,7 @@ Outputs:
     Description: Private IP DNS name
     Value: !GetAtt LinuxNode.PrivateDnsName
 
-  PrivateKeyConsoleURL:
+  PrivateKeyURL:
     Description: Direct link to view the private key in Parameter Store console
     Value: !Sub https://${AWS::Region}.console.aws.amazon.com/systems-manager/parameters/ec2/keypair/${LinuxNodeKeyPair.KeyPairId}/description?region=${AWS::Region}
 
