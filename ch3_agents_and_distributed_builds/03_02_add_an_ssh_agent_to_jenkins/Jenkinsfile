@@ -8,9 +8,8 @@ pipeline {
             steps {
                 sh 'mvn --version'
                 sh 'git --version'
-                git branch: 'feature/chapter3',
-                    url: 'https://github.com/LinkedInLearning/intermediate-jenkins-3978673.git',
-                    credentialsId: '8d409789-65c9-4eb1-9d17-4c284d7532fc'
+                git branch: 'main',
+                    url: 'https://github.com/LinkedInLearning/intermediate-jenkins-3978673.git'
             }
         }
         stage('Clean') {
