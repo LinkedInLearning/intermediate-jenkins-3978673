@@ -1,15 +1,14 @@
 pipeline {
     agent {
-      dockerContainer 'public.ecr.aws/docker/library/maven:amazoncorretto'
+      dockerContainer 'public.ecr.aws/docker/library/maven:3.9.5-sapmachine-21'
     }
     stages {
         stage('Source') {
             steps {
                 sh 'mvn --version'
                 sh 'git --version'
-                git branch: 'feature/chapter3',
-                    url: 'https://github.com/LinkedInLearning/intermediate-jenkins-3978673.git',
-                    credentialsId: 'f65e94fc-4137-45fd-8b88-a4df745951d7'
+                git branch: 'main',
+                    url: 'https://github.com/LinkedInLearning/intermediate-jenkins-3978673.git'
             }
         }
         stage('Clean') {
