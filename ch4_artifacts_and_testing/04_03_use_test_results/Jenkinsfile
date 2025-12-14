@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        PROJECT_DIRECTORY = "ch4_artifacts_and_testing/04_02_publish_reports"
+        PROJECT_DIRECTORY = "ch4_artifacts_and_testing/04_03_use_test_results"
     }
 
     options {
