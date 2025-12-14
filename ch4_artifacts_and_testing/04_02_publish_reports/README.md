@@ -178,7 +178,7 @@ All tests should be passing in the completed pipeline run.
 
 In the next lesson, you’ll go a step further by using test results to control how a pipeline behaves.
 
-You’ll learn how Jenkins can react to test outcomes to fail builds, gate later stages, or conditionally allow deployments based on the quality of test results.
+You’ll learn how Jenkins can react to test outcomes to fail builds or gate later stages.
 
 <!-- FooterStart -->
 ---
