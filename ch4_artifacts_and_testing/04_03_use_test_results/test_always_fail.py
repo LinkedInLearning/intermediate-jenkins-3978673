@@ -13,7 +13,6 @@ class TestIntentionalFailures(unittest.TestCase):
         """This test always fails on purpose"""
         self.fail("Intentional failure for pipeline demonstration")
 
-
     def test_ALWAYS_FAIL_2(self):
-        '''test_ALWAYS_FAIL: this test will always fail'''
+        """test_ALWAYS_FAIL: this test will always fail"""
         assert False
