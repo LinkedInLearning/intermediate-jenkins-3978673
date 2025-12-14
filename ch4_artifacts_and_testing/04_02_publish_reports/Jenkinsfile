@@ -14,39 +14,53 @@ pipeline {
     stages {
         stage('Requirements') {
             steps {
+                // Check environment versions
                 sh 'python3 --version'
                 sh 'git --version'
+
+                // Checkout code
                 git branch: 'main',
                     url: 'https://github.com/LinkedInLearning/intermediate-jenkins-3978673.git'
+
                 dir("${env.WORKSPACE}/${env.EXERCISE_FILE_PATH}"){
+                    // Create venv and install requirements
                     sh 'python3 -m venv venv'
                     sh './venv/bin/pip3 install --upgrade --requirement requirements.txt'
                 }
             }
         }
+
         stage('Lint') {
             steps {
                 dir("${env.WORKSPACE}/${env.EXERCISE_FILE_PATH}"){
+                    // Run flake8
                     sh 'venv/bin/flake8 --ignore=E501,E231 *.py'
-                    sh 'venv/bin/pylint --errors-only --disable=C0301 --disable=C0326 *.py'
+
+                    // Run pylint, outputting results in JSON format
+                    // Removed '--disable=C0326' which was reported as useless
+                    sh 'venv/bin/pylint --errors-only --disable=C0301 --output-format=json *.py > pylint_report.json'
                 }
             }
         }
+
         stage('Test') {
             steps {
                 dir("${env.WORKSPACE}/${env.EXERCISE_FILE_PATH}"){
+                    // Run tests to generate coverage and JUnit XML
                     sh('''
                         venv/bin/coverage run -m pytest -v test_*.py \
-                            --junitxml=pytest_junit.xml
+                        --junitxml=pytest_junit.xml
                     ''')
                 }
             }
         }
+
         stage('Build') {
             steps {
                 echo "Build the application in this step..."
             }
         }
+
         stage('Deploy') {
             steps {
                 echo "Deploy the application in this step..."
@@ -57,21 +71,23 @@ pipeline {
     post {
         always {
             dir("${env.WORKSPACE}/${env.EXERCISE_FILE_PATH}"){
+                // Generate Cobertura XML report from coverage data
                 sh 'venv/bin/coverage xml'
+
+                // Publish JUnit reports
+                junit allowEmptyResults: true, testResults: '**/pytest_junit.xml'
+
+                // Publish Code Coverage reports
+                recordCoverage tools: [[parser: 'COBERTURA', pattern: '**/coverage.xml']],
+                    enabledForFailure: true,
+                    ignoreParsingErrors: true
+
+                // Archive all XML reports
+                archiveArtifacts artifacts: '**/*.xml',
+                    allowEmptyArchive: true,
+                    fingerprint: true,
+                    onlyIfSuccessful: true
             }
-
-            junit allowEmptyResults: true, testResults: '**/pytest_junit.xml'
-
-            junit allowEmptyResults: true, testResults: '**/pylint_junit.xml'
-
-            publishCoverage adapters: [cobertura('**/coverage.xml')],
-                sourceFileResolver: sourceFiles('STORE_LAST_BUILD')
-
-            archiveArtifacts artifacts: '**/*.xml',
-                allowEmptyArchive: true,
-                fingerprint: true,
-                followSymlinks: false,
-                onlyIfSuccessful: true
         }
     }
 }
