@@ -10,7 +10,7 @@ The full process takes about **10–15 minutes**, including stack deployment tim
 
 In this exercise, you will:
 
-1. Deploy a Jenkins server using a prebuilt CloudFormation template.
+1. Deploy a Jenkins server using a pre-built CloudFormation template.
 2. Wait for AWS to provision and configure the server.
 3. Retrieve the Jenkins initial admin password.
 4. Complete the Jenkins first-time setup through the web interface.
