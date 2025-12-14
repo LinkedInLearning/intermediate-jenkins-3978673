@@ -86,7 +86,7 @@ pipeline {
                 archiveArtifacts artifacts: '**/*.xml',
                     allowEmptyArchive: true,
                     fingerprint: true,
-                    onlyIfSuccessful: true
+                    onlyIfSuccessful: false
             }
         }
     }

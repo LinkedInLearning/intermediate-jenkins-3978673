@@ -56,6 +56,130 @@ Lint → Test → Build → Deploy
 - Supports JaCoCo, Cobertura, and others.
 - Visualizes coverage metrics and trends across builds.
 
+## Get Hands-On With Test and Code Coverage Reports
+
+In this lab, you'll create a Jenkins pipeline job named `publish-reports`. The pipeline checks out a Python project, installs dependencies, runs linting and tests, and generates two types of reports:
+
+- Test report in **JUnit** format
+- Code coverage reports in **Cobertura** format
+
+Jenkins will process these reports in the `post` section of the pipeline, publish visual trends, and archive the reports as build artifacts.
+
+### Prerequisites
+
+Before starting this lab, make sure you have:
+
+- A running Jenkins server
+- The exercise files for this lesson
+- The following Jenkins plugins installed:
+
+  - **JUnit Plugin**
+  - **Coverage Plugin**
+
+> [!IMPORTANT]
+> If the Coverage Plugin is not installed, the pipeline will fail during the coverage collection step.
+
+### Instructions
+
+#### 1. Create the Pipeline Job
+
+1. From the Jenkins dashboard, select **New Item**.
+2. Enter the job name `publish-reports`.
+3. Select **Pipeline** as the job type.
+4. Select **OK**.
+
+#### 2. Configure the Pipeline
+
+1. In the job configuration screen, scroll to the **Pipeline** section.
+2. Configure the pipeline to use the provided [`Jenkinsfile`](./Jenkinsfile) from the exercise files.
+3. Save the job configuration.
+
+#### 3. Review the Pipeline Stages
+
+1. Open the `publish-reports` pipeline job.
+
+2. Review the early setup stages and note that they:
+
+   - Check out the source code
+   - Install Python dependencies
+   - Lint the code for syntax and style issues
+
+3. Expand the **Test** stage.
+
+   - This stage runs the test suite.
+   - It generates:
+
+     - A **JUnit XML** test report
+     - A **Cobertura XML** code coverage report
+
+4. The **Build** and **Deploy** stages are place holders for now.
+
+#### 4. Review the Post Section
+
+1. Reivew the `post` block in the pipeline definition.
+2. Observe that this section:
+
+   - Processes the JUnit test report
+   - Processes the Cobertura coverage report
+   - Archives the reports as build artifacts
+
+The `post` section runs after all pipeline stages, ensuring reports are collected even if earlier stages fail.
+
+#### 5. Run the Pipeline
+
+1. Return to the `publish-reports` job and select **Build Now**.
+2. Wait for the pipeline to complete successfully.
+
+#### 6. View Test and Coverage Trends
+
+1. On the `publish-reports` job home page, locate the graphs on the right side of the screen.
+2. Identify:
+
+   - The **Test Results Trend** graph
+   - The **Code Coverage Trend** graph
+
+These graphs show how test results and coverage change over time across builds.
+
+#### 7. Explore the Coverage Report
+
+1. From the job menu on the left, select **Coverage Report**.
+
+2. Select **Overview** if it is not already selected.
+
+   - Review coverage summarized by line, class, and file.
+
+3. Select the **Files** tab.
+
+   - Review coverage results for individual files.
+
+4. Select **app.py**.
+
+   - Review line-by-line coverage information for the file.
+
+#### 9. Explore the Test Results
+
+1. From the job menu on the left, select **Tests**.
+
+2. Review the summary of:
+
+   - Passed tests
+   - Failed tests
+   - Skipped tests
+
+3. Select the **test_app** package.
+
+4. Select **Tests**.
+
+   - Review the individual test cases and their results.
+
+All tests should be passing in the completed pipeline run.
+
+### Next Steps
+
+In the next lesson, you’ll go a step further by using test results to control how a pipeline behaves.
+
+You’ll learn how Jenkins can react to test outcomes to fail builds, gate later stages, or conditionally allow deployments based on the quality of test results.
+
 <!-- FooterStart -->
 ---
 [← 04_01 Artifacts and Fingerprinting](../04_01_artifacts_fingerprinting/README.md) | [04_03 Use Test Results to Stop a Build →](../04_03_use_test_results_to_stop_a_build/README.md)
