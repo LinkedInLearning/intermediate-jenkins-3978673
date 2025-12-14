@@ -71,7 +71,3 @@ class Tests(unittest.TestCase):
             assert res.status == "200 OK", f"GUID {guid} should be accessible"
             data = res.get_json()
             assert data["guid"] == guid
-
-    def test_ALWAYS_FAIL(self):
-        '''test_ALWAYS_FAIL: this test will always fail'''
-        assert False
