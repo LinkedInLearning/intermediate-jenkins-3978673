@@ -171,13 +171,14 @@ This lab should take approximately **15 to 20 minutes** to complete.
 
 ### **6. Review Cross-Job Fingerprinting**
 
-1. Open the archived `report.txt` fingerprint from either job.
+1. Open the archived `report.txt` fingerprint from the `create-artifact` job.
 1. Observe that Jenkins lists both:
 
    - The job that created the artifact
    - The job that consumed the artifact
 
-1. Use this view to trace artifact flow across pipelines.
+> [!TIP]
+> Use the fingerprint view to trace artifact flow across pipelines.
 
 ## **Conclusion**
 
