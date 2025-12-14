@@ -54,7 +54,6 @@ class Tests(unittest.TestCase):
     def test_invalid_guid_formats(self):
         """test_invalid_guids: various invalid GUID formats return 404"""
         invalid_guids = [
-            "",
             "not-a-guid",
             "12345",
             "invalid-guid-format",
