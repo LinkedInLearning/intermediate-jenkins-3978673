@@ -104,7 +104,7 @@ Before starting this lab, make sure you have:
    - Install Python dependencies
    - Lint the code for syntax and style issues
 
-3. Expand the **Test** stage.
+3. Review the **Test** stage.
 
    - This stage runs the test suite.
    - It generates:
@@ -116,7 +116,7 @@ Before starting this lab, make sure you have:
 
 #### 4. Review the Post Section
 
-1. Reivew the `post` block in the pipeline definition.
+1. Review the `post` block in the pipeline definition.
 2. Observe that this section:
 
    - Processes the JUnit test report
@@ -178,9 +178,7 @@ All tests should be passing in the completed pipeline run.
 
 In the next lesson, you’ll go a step further by using test results to control how a pipeline behaves.
 
-You’ll learn how Jenkins can react to test outcomes to fail builds or gate later stages.
-
 <!-- FooterStart -->
 ---
-[← 04_01 Artifacts and Fingerprinting](../04_01_artifacts_fingerprinting/README.md) | [04_03 Use Test Results to Stop a Build →](../04_03_use_test_results_to_stop_a_build/README.md)
+[← 04_01 Artifacts and Fingerprinting](../04_01_artifacts_fingerprinting/README.md) | [04_03 Use Test Results to Stop a Pipeline →](../04_03_use_test_results/README.md)
 <!-- FooterEnd -->

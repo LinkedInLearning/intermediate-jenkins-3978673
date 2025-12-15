@@ -45,12 +45,13 @@ pipeline {
 
         stage('Test') {
             steps {
-                dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}"){
-                    // Run tests to generate coverage and JUnit XML
-                    sh('''
-                        venv/bin/coverage run -m pytest -v test_*.py \
-                        --junitxml=pytest_junit.xml
-                    ''')
+                dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}") {
+                    catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                        sh '''
+                            venv/bin/coverage run -m pytest -v test_*.py \
+                            --junitxml=pytest_junit.xml
+                        '''
+                    }
                 }
             }
         }
@@ -70,24 +71,36 @@ pipeline {
 
     post {
         always {
-            dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}"){
-                // Generate Cobertura XML report from coverage data
-                sh 'venv/bin/coverage xml'
+            dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}") {
 
-                // Publish JUnit reports
-                junit allowEmptyResults: true, testResults: '**/pytest_junit.xml'
+                // 1) Publish JUnit first so the UI gets test results whenever the XML exists
+                junit(
+                    testResults: 'pytest_junit.xml',
+                    allowEmptyResults: true
+                )
 
-                // Publish Code Coverage reports
-                recordCoverage tools: [[parser: 'COBERTURA', pattern: '**/coverage.xml']],
+                // 2) Generate coverage.xml, but don't fail the post block if it can't be generated
+                sh(
+                    script: 'venv/bin/coverage xml || true',
+                    label: 'Generate Cobertura XML'
+                )
+
+                // 3) Publish coverage if the file exists (recordCoverage will tolerate missing/parse issues)
+                recordCoverage(
+                    tools: [[parser: 'COBERTURA', pattern: 'coverage.xml']],
                     enabledForFailure: true,
                     ignoreParsingErrors: true
+                )
 
-                // Archive all XML reports
-                archiveArtifacts artifacts: '**/*.xml',
+                // 4) Archive reports (also non-fatal)
+                archiveArtifacts(
+                    artifacts: '*.xml',
                     allowEmptyArchive: true,
                     fingerprint: true,
                     onlyIfSuccessful: false
+                )
             }
         }
     }
+
 }

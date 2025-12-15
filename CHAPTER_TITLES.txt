@@ -20,7 +20,7 @@
 03_05 Solution: Improve a Docker Agent Pipeline
 04_01 Artifacts and Fingerprinting
 04_02 Publish Test Results and Code Coverage Reports
-04_03 Use Test Results to Stop a Build
+04_03 Use Test Results to Stop a Pipeline
 04_04 TBD: Use an External Test Runner and/Or AI tool
 04_05 Challenge: Create artifacts and Reports
 04_06 Solution: Create artifacts and Reports
