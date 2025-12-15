@@ -19,22 +19,21 @@ class TestDataProcessor(unittest.TestCase):
         result = self.processor.get_user_info()
         self.assertEqual(result, "John Doe")
 
-    def test_get_incomplete_data_fails(self):
+    def test_get_incomplete_data(self):
         """
         Test that demonstrates accessing incomplete data.
         """
-        # This will raise a confusing KeyError from deep in the metaclass
         result = self.processor.get_incomplete_data()
         self.assertIsNotNone(result)
 
-    def test_get_empty_list_fails(self):
+    def test_get_empty_list(self):
         """
         Test that demonstrates accessing an empty list.
         """
         result = self.processor.get_empty_list()
         self.assertIsNotNone(result)
 
-    def test_get_malformed_structure_fails(self):
+    def test_get_malformed_structure(self):
         """
         Test that demonstrates malformed data structure access.
         """
