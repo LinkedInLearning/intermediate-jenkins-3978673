@@ -14,8 +14,8 @@ class TestDataProcessor(unittest.TestCase):
         """Set up test fixtures."""
         self.processor = DataProcessor()
 
-    def test_get_user_info_success(self):
-        """Test that get_user_info works correctly."""
+    def test_get_user_info(self):
+        """Test that demonstrates gettig user info"""
         result = self.processor.get_user_info()
         self.assertEqual(result, "John Doe")
 
