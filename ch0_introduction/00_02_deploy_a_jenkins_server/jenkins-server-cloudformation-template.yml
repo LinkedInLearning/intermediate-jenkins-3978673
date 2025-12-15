@@ -1,0 +1,200 @@
+Description: An EC2 instance running Jenkins as a service on Amazon Linux 2023
+
+Parameters:
+  InstanceType:
+    Description: The size to use for the EC2 instance
+    Type: String
+    AllowedValues:
+      - t3.small
+      - t3.medium
+      - t3.large
+      - t3.xlarge
+      - t3.2xlarge
+    Default: t3.medium
+    ConstraintDescription: Must be a valid EC2 instance type.
+
+Resources:
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
+
+  Profile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref Role
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow TCP traffic on port 80
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+
+  Server:
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT15M
+    Type: AWS::EC2::Instance
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          application_installation:
+            - install_cfn
+            - install_apps
+        install_cfn:
+          files:
+            /etc/cfn/cfn-hup.conf:
+              content: !Sub |
+                [main]
+                stack=${AWS::StackId}
+                region=${AWS::Region}
+              mode: "000400"
+              owner: root
+              group: root
+            /etc/cfn/hooks.d/cfn-auto-reloader.conf:
+              content: !Sub |
+                [cfn-auto-reloader-hook]
+                triggers=post.update
+                path=Resources.Server.Metadata.AWS::CloudFormation::Init
+                action=/opt/aws/bin/cfn-init -v
+                      --stack ${AWS::StackName}
+                      --resource Server
+                      --configsets application_installation
+                      --region ${AWS::Region}
+              mode: "000400"
+              owner: root
+              group: root
+          services:
+            systemd:
+              cfn-hup:
+                enabled: "true"
+                ensureRunning: "true"
+                files:
+                  - /etc/cfn/cfn-hup.conf
+                  - /etc/cfn/hooks.d/cfn-auto-reloader.conf
+        install_apps:
+          packages:
+            yum:
+              git: []
+              docker: []
+              java-21-amazon-corretto: []
+              python3-pip: []
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: '{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64}}'
+      IamInstanceProfile: !Ref Profile
+      SecurityGroups:
+        - !Ref SecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}
+      UserData: !Base64
+        Fn::Sub: |
+          #!/bin/bash -xe
+          exec > >(tee /var/log/user-data.log) 2>&1
+
+          dnf update -y aws-cfn-bootstrap
+
+          /opt/aws/bin/cfn-init -v \
+            --stack ${AWS::StackName} \
+            --region ${AWS::Region} \
+            --resource Server \
+            --configsets application_installation
+
+          echo "# $(date) Start and enable docker..."
+          systemctl enable docker
+          systemctl start docker
+
+          echo "# $(date) Install Jenkins key and package configuration..."
+          # Add Jenkins repository for RHEL/CentOS (compatible with Amazon Linux 2023)
+          wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+          rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+          echo "# $(date) Install Jenkins and NGINX..."
+          dnf install -y jenkins nginx
+
+          echo "# $(date) Add jenkins user to the docker group..."
+          usermod -aG docker jenkins
+
+          echo "# $(date) Configure NGINX..."
+          # Remove default nginx configuration
+          rm -f /etc/nginx/conf.d/default.conf
+
+          cat > /etc/nginx/conf.d/jenkins.conf <<'NGINXEOF'
+          upstream jenkins {
+              server 127.0.0.1:8080;
+          }
+
+          server {
+              listen 80 default_server;
+              listen [::]:80  default_server;
+              location / {
+                  proxy_pass http://jenkins;
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Real-IP $remote_addr;
+              }
+          }
+          NGINXEOF
+
+          echo "# $(date) Start and enable NGINX..."
+          systemctl enable nginx
+          systemctl start nginx
+
+          echo "# $(date) Start and enable Jenkins service..."
+          systemctl enable jenkins
+          systemctl start jenkins
+
+          # Wait for Jenkins to start and generate initial admin password
+          echo "# $(date) Waiting for Jenkins to initialize..."
+          while [ ! -f /var/lib/jenkins/secrets/initialAdminPassword ]; do
+              echo -n "."
+              sleep 1
+          done
+
+          echo "# $(date) Copy the initial admin password to the root user's home directory..."
+          cp /var/lib/jenkins/secrets/initialAdminPassword ~
+
+          /opt/aws/bin/cfn-signal -e $? \
+            --stack ${AWS::StackName} \
+            --region ${AWS::Region} \
+            --resource Server
+
+  ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref Server
+
+Outputs:
+  InitialAdminPassword:
+    Description: Copy this command and run it in the terminal to get the initial admin password
+    Value: sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+  TerminalURL:
+    Description: Follow this URL to open a terminal on the server where Jenkins is running
+    Value: !Sub https://${AWS::Region}.console.aws.amazon.com/systems-manager/session-manager/${Server}?region=${AWS::Region}
+
+  JenkinsURL:
+    Description: Follow this URL to accesss the Jenkins web interface
+    Value: !Sub http://${Server.PublicDnsName}/
+
+  SecurityGroupId:
+    Description: Security Group ID of the Jenkins server
+    Value: !GetAtt SecurityGroup.GroupId
+    Export:
+      Name: !Sub ${AWS::StackName}-SecurityGroupId

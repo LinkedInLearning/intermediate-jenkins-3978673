@@ -1,0 +1,36 @@
+pipeline {
+    agent {
+      dockerContainer 'public.ecr.aws/docker/library/maven:3.9.5-sapmachine-21'
+    }
+    stages {
+        stage('Source') {
+            steps {
+                sh 'mvn --version'
+                sh 'git --version'
+                git branch: 'main',
+                    url: 'https://github.com/LinkedInLearning/intermediate-jenkins-3978673.git'
+            }
+        }
+        stage('Clean') {
+            steps {
+                dir("${env.WORKSPACE}/ch3_agents_and_distributed_builds/03_03_add_docker_agents_to_jenkins"){
+                    sh 'mvn clean'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                dir("${env.WORKSPACE}/ch3_agents_and_distributed_builds/03_03_add_docker_agents_to_jenkins"){
+                    sh 'mvn test'
+                }
+            }
+        }
+        stage('Package') {
+            steps {
+                dir("${env.WORKSPACE}/ch3_agents_and_distributed_builds/03_03_add_docker_agents_to_jenkins"){
+                    sh 'mvn package -DskipTests'
+                }
+            }
+        }
+    }
+}

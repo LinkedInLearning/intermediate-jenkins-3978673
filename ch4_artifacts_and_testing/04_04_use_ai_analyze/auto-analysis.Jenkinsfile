@@ -1,0 +1,46 @@
+pipeline {
+  agent any
+  environment {
+    PROJECT_DIRECTORY = 'ch4_artifacts_and_testing/04_04_use_ai_analyze'
+  }
+
+  stages {
+    stage('Requirements') {
+        steps {
+            // Check environment versions
+            sh 'python3 --version'
+            sh 'git --version'
+
+            // Checkout code
+            git branch: 'main',
+                url: 'https://github.com/LinkedInLearning/intermediate-jenkins-3978673.git'
+
+            dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}"){
+                // Create venv and install requirements
+                sh 'python3 -m venv venv'
+                sh 'venv/bin/pip3 install --upgrade --requirement requirements.txt'
+            }
+        }
+    }
+
+    stage('Test') {
+      steps {
+        echo 'Running unit tests...'
+        dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}"){
+          sh 'venv/bin/pytest -v test_*.py'
+        }
+      }
+    }
+  }
+
+  post {
+      failure {
+          echo 'Build failed — generating AI explanation...'
+
+          // Automatically analyze the failure using the Explain Error plugin
+          explainError()
+
+          echo 'AI analysis complete. Review the explanation in the console output.'
+      }
+  }
+}

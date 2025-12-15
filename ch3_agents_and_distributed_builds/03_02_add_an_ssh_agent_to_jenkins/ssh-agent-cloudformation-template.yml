@@ -1,0 +1,136 @@
+Description: EC2 build server for Jenkins with SSH access from Jenkins controller
+
+Parameters:
+  JenkinsStackName:
+    Description: Name of the CloudFormation stack that deployed the Jenkins server
+    Type: String
+    ConstraintDescription: Must be an existing CloudFormation stack name
+
+  InstanceType:
+    Description: The size to use for the EC2 instance
+    Type: String
+    AllowedValues:
+      - t3.small
+      - t3.medium
+      - t3.large
+      - t3.xlarge
+      - t3.2xlarge
+    Default: t3.small
+    ConstraintDescription: Must be a valid EC2 instance type.
+
+Resources:
+
+  # IAM Role for the build server
+  LinuxNodeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  LinuxNodeProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref LinuxNodeRole
+
+  # Key Pair for SSH access
+  LinuxNodeKeyPair:
+    Type: AWS::EC2::KeyPair
+    Properties:
+      KeyName: !Sub ${AWS::StackName}-keypair
+      KeyType: ed25519
+      KeyFormat: pem
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-keypair
+
+  # Security Group for the build server
+  LinuxNodeSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH from Jenkins controller
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          SourceSecurityGroupId: !ImportValue
+            Fn::Sub: ${JenkinsStackName}-SecurityGroupId
+          Description: SSH from jenkins controller
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-sg
+
+  # EC2 Instance
+  LinuxNode:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: '{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64}}'
+      IamInstanceProfile: !Ref LinuxNodeProfile
+      SecurityGroups:
+        - !Ref LinuxNodeSecurityGroup
+      KeyName: !Ref LinuxNodeKeyPair
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}
+      UserData: !Base64 |
+        #!/bin/bash
+        set -eux
+        # Log the installation output
+        exec > >(tee /var/log/user-data.log) 2>&1
+
+        # Unmount /tmp if already mounted
+        umount /tmp || true
+
+        # Create the /tmp directory if it doesn't exist
+        mkdir -p /tmp
+
+        # Backup /etc/fstab
+        cp /etc/fstab /etc/fstab-$(date +%s).txt
+
+        # Remove any existing /tmp entry (just in case)
+        sed -i '/\/tmp/d' /etc/fstab
+
+        # Add a new tmpfs entry for /tmp with 4G size
+        echo "tmpfs /tmp tmpfs defaults,size=4G 0 0" >> /etc/fstab
+
+        # Mount all filesystems in fstab (including /tmp)
+        mount -a
+
+        # Set correct permissions for /tmp
+        chmod 1777 /tmp
+
+        # install java and python
+        dnf install --assumeyes \
+            java-21-amazon-corretto-headless \
+            python3.12.x86_64 \
+            python3.12-pip
+
+        # install development tools and virtualenv then reboot
+        dnf groupinfo "Development Tools"
+        dnf groupinstall -y "Development Tools"
+        /usr/bin/pip3.12 install virtualenv
+        reboot now
+
+Outputs:
+  LinuxNodePrivateDnsName:
+    Description: Private IP DNS name
+    Value: !GetAtt LinuxNode.PrivateDnsName
+
+  PrivateKeyURL:
+    Description: Direct link to view the private key in Parameter Store console
+    Value: !Sub https://${AWS::Region}.console.aws.amazon.com/systems-manager/parameters/ec2/keypair/${LinuxNodeKeyPair.KeyPairId}/description?region=${AWS::Region}
+
+  TerminalURL:
+    Description: Follow this URL to open a terminal on the build server
+    Value: !Sub https://${AWS::Region}.console.aws.amazon.com/systems-manager/session-manager/${LinuxNode}?region=${AWS::Region}
