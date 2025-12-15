@@ -153,7 +153,41 @@ That analysis is then made immediately available in the console output when the 
 
 In practice, this means you spend less time waiting on an explanation and more time understanding what went wrong—especially useful when you’re iterating on failing pipelines or reviewing errors from automated builds.
 
-### 2. Why does the code fail?
+### 2. How can I found out the names of the models I can use with the plugin?
+
+#### OpenAI
+
+You'll need:
+
+- an OpenAI API key
+- a `bash` terminal
+- `curl`
+- and `jq`.
+
+1. Open a `bash` terminal.
+1. Export your API key as an environment variable named `OPENAI_API_KEY`:
+
+    ```bash
+    export OPENAI_API_KEY=sk-proj-QjZ....
+    ```
+
+1. Run the following command:
+
+    ```bash
+    curl -s https://api.openai.com/v1/models -H "Authorization: Bearer $OPENAI_API_KEY" | jq '.data[] | select(.object == "model").id'
+    ```
+
+1. Review the list of model names returned by the command.
+
+#### Google
+
+TODO
+
+#### Ollama
+
+TODO
+
+### 3. Why does the code fail?
 
 For this demo, the Python project is intentionally designed to fail in a non-obvious way.
 
