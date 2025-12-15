@@ -16,9 +16,7 @@ class MetaClass(type):
                 original = attr_value
 
                 def wrapper(self, _original=original):
-                    # This automatic unwrapping creates confusing errors
                     result = _original(self)
-                    # Assumes result is always a list with dict containing 'data' with 'value'
                     return result[0]["data"]["value"]
 
                 attrs[attr_name] = wrapper
@@ -42,21 +40,18 @@ class DataProcessor(metaclass=MetaClass):
     def get_incomplete_data(self):
         """
         Returns data that doesn't match the metaclass expectations.
-        This will cause a confusing KeyError deep in the metaclass wrapper.
         """
         return [{"data": {}}]  # Missing 'value' key
 
     def get_empty_list(self):
         """
         Returns an empty list.
-        This will cause a confusing IndexError in the metaclass wrapper.
         """
         return []
 
     def get_malformed_structure(self):
         """
         Returns data with wrong structure.
-        This will cause a confusing TypeError in the metaclass wrapper.
         """
         return [{"wrong_key": "some_value"}]
 
