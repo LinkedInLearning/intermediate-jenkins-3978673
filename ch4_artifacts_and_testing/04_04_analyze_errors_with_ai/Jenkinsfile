@@ -5,28 +5,28 @@ pipeline {
   }
 
   stages {
-        stage('Requirements') {
-            steps {
-                // Check environment versions
-                sh 'python3 --version'
-                sh 'git --version'
+    stage('Requirements') {
+        steps {
+            // Check environment versions
+            sh 'python3 --version'
+            sh 'git --version'
 
-                // Checkout code
-                git branch: 'main',
-                    url: 'https://github.com/LinkedInLearning/intermediate-jenkins-3978673.git'
+            // Checkout code
+            git branch: 'main',
+                url: 'https://github.com/LinkedInLearning/intermediate-jenkins-3978673.git'
 
-                dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}"){
-                    // Create venv and install requirements
-                    sh 'python3 -m venv venv'
-                    sh './venv/bin/pip3 install --upgrade --requirement requirements.txt'
-                }
+            dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}"){
+                // Create venv and install requirements
+                sh 'python3 -m venv venv'
+                sh './venv/bin/pip3 install --upgrade --requirement requirements.txt'
             }
         }
+    }
 
     stage('Test') {
       steps {
         echo 'Running unit tests...'
-        sh 'python3 -m unittest test_main.py -v'
+        sh 'pytest -v test_*.py'
       }
     }
   }
