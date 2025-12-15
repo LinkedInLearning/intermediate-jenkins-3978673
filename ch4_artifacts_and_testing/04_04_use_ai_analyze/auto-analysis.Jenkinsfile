@@ -34,8 +34,13 @@ pipeline {
   }
 
   post {
-    always {
-      echo 'Pipeline complete'
-    }
+      failure {
+          echo 'Build failed — generating AI explanation...'
+
+          // Automatically analyze the failure using the Explain Error plugin
+          explainError()
+
+          echo 'AI analysis complete. Review the explanation in the console output.'
+      }
   }
 }
