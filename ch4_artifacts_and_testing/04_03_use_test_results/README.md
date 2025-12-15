@@ -96,5 +96,5 @@ In the next lesson, you’ll install and configure a Jenkins plugin that uses AI
 
 <!-- FooterStart -->
 ---
-[← 04_02 Publish Test Results and Code Coverage Reports](../04_02_publish_reports/README.md) | [04_04 Use AI to Analyze Errors in Test Results →](../04_04_analyze_errors_with_ai/README.md)
+[← 04_02 Publish Test Results and Code Coverage Reports](../04_02_publish_reports/README.md) | [04_04 Use AI to Analyze Errors →](../04_04_use_ai_analyze/README.md)
 <!-- FooterEnd -->

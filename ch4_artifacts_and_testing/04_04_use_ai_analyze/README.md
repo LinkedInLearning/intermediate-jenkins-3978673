@@ -1,4 +1,4 @@
-# 04_04 Use AI to Analyze Errors in Test Results
+# 04_04 Use AI to Analyze Errors
 
 <!-- FooterStart -->
 ---
