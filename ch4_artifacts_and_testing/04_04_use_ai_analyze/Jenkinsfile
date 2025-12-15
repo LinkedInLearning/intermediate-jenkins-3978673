@@ -26,7 +26,9 @@ pipeline {
     stage('Test') {
       steps {
         echo 'Running unit tests...'
-        sh 'pytest -v test_*.py'
+        dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}"){
+          sh './venv/bin/pytest -v test_*.py'
+        }
       }
     }
   }
