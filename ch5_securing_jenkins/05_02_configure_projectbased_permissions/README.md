@@ -5,8 +5,8 @@ Project-based authorization allows you to control who can access or manage speci
 **Use project-based authorization when:**
 
 - Global permissions are too broad
-- Different teams own different jobs or folders
-- Non-admin users should only build or view specific projects
+- A single Jenkins server is being used by multiple teams that need to separate jobs and their associated permissions
+- Non-admin users should only access certain folders or interact with specific jobs
 
 **How project-based authorization works:**
 
