@@ -28,6 +28,7 @@ A `when` block can use three built-in conditions to determine if the the steps i
 Expression conditions provide the most flexibility for conditional statements.  We can use Groovy expressions along with parameters and other variables to build a statement that returns true or false.
 
 Review the following document for more information on Groovy expressions:
+
 - [The Apache Groovy programming language - Operators](https://groovy-lang.org/operators.html)
 
 ## Manual Approvals
