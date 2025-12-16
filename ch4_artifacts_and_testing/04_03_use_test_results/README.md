@@ -1,6 +1,6 @@
 # 04_03 Use Test Results to Stop a Pipeline
 
-In this lesson, you'll create two Jenkins pipeline jobs:
+In this lab, you'll create two Jenkins pipeline jobs:
 
 - `publish-reports-pipeline-fail`
 - `publish-reports-pipeline-unstable`

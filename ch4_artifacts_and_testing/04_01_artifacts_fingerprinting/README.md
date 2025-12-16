@@ -1,5 +1,7 @@
 # 04_01 Artifacts and Fingerprinting
 
+TODO: Use this document at the "golden" style for the other README docs, particularly the **lab** section.
+
 ## **What is an Artifact?**
 
 - An artifact is any file a Jenkins job creates that needs to be saved after a build.
@@ -28,7 +30,7 @@
 - This checksum becomes the artifact’s fingerprint and is stored in Jenkins’ internal database.
 - Fingerprints allow Jenkins to identify which jobs produced an artifact and which jobs later consumed it.
 
-## Artifact Management with the Copy Artifact Plugin
+## Lab: Artifact Management with the Copy Artifact Plugin
 
 In this lab, you will create and share build artifacts between Jenkins pipeline jobs. You will first generate and archive an artifact, then copy and analyze that artifact from a second pipeline.
 
@@ -180,9 +182,10 @@ This lab should take approximately **15 to 20 minutes** to complete.
 > [!TIP]
 > Use the fingerprint view to trace artifact flow across pipelines.
 
-## **Conclusion**
+## **Next Steps**
 
-You have successfully shared artifacts between Jenkins pipelines using permissions and fingerprinting.
+TODO: Write a better closing for this document.
+Learn how to publish reports detailing tests and tracking code coverage.
 
 <!-- FooterStart -->
 ---

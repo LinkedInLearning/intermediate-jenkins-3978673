@@ -6,8 +6,7 @@ Jenkins also allows you to create user accounts with usernames and passwords to 
 
 - **Everyone is an admin by default**: The default authorization allows all authenticated users to perform any operations.
 
-> [!TIP]
-> A best practice is to limit admin permission to a few, select users and give limited permissions to other users as needed.
+- A best practice is to limit admin permission to a few, select users and give limited permissions to other users as needed.
 
 - **Matrix-based Security**: To configure user permissions, most Jenkins installations will use the [Matrix authorization strategy plugin](https://plugins.jenkins.io/matrix-auth/).  This is one of the suggested plugins that gets installed in most Jenkins installations.
 
@@ -28,7 +27,7 @@ View the following documents for more information on security configurations in 
 | [Permissions](https://www.jenkins.io/doc/book/security/permissions/) | An overview of permissions in the Jenkins system |
 | [Disable Access Control](https://www.jenkins.io/doc/book/security/access-control/disable/) | ⚠️ **Steps to take if you get locked out!** ⚠️|
 
-## Configure Matrix-Based Security in Jenkins
+## Lab: Configure Matrix-Based Security in Jenkins
 
 In this lab, you’ll configure Jenkins security using **matrix-based authorization**. You’ll create a non-admin user, assign permissions explicitly, and verify how those permissions affect what the user can see and do in the Jenkins interface.
 

@@ -56,7 +56,7 @@ Lint → Test → Build → Deploy
 - Supports JaCoCo, Cobertura, and others.
 - Visualizes coverage metrics and trends across builds.
 
-## Get Hands-On With Test and Code Coverage Reports
+## Lab: Get Hands-On With Test and Code Coverage Reports
 
 In this lab, you'll create a Jenkins pipeline job named `publish-reports`. The pipeline checks out a Python project, installs dependencies, runs linting and tests, and generates two types of reports:
 
