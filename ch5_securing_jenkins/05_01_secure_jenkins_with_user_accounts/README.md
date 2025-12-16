@@ -17,6 +17,18 @@ Jenkins also allows you to create user accounts with usernames and passwords to 
 > When setting up Matrix-based security, please be sure to give your user administrative permissions.
 > If you do not assign admin permissions to your account, **you run the risk of locking yourself out of your Jenkins server**.
 
+## Common Permissions
+
+| Permission Name | Permission description                   |
+|-----------------|------------------------------------------|
+| Read            | View job configuration and build history |
+| Build           | Trigger builds                           |
+| Cancel          | Stop running builds                      |
+| Configure       | Modify job configuration                 |
+| Workspace       | Access the job workspace                 |
+| Delete          | Remove the job                           |
+| Move            | Relocate the job to a folder             |
+
 ## Resources
 
 View the following documents for more information on security configurations in Jenkins.
