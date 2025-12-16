@@ -126,7 +126,7 @@ Consider how tools like this might fit into your own CI/CD workflows.
 
 ### 1. Automatic AI Analysis
 
-The Explain Error plugin includes a build step that can be used to generate an exaplanation.
+The Explain Error plugin includes a build step that can be used to generate an explanation.
 
 Take a look at the `post` section in the following pipeline configuration:
 
@@ -228,5 +228,6 @@ This leads to stack traces that appear disconnected from the code being tested�
 Tools that use AI excel in scenarios like this by summarizing the root cause and highlighting exactly what the code returned.
 
 <!-- FooterStart -->
+---
 [← 04_03 Use Test Results to Stop a Pipeline](../04_03_use_test_results/README.md) | [04_05 Challenge: Create artifacts and Reports →](../04_05_challenge_create_artifacts_reports/README.md)
 <!-- FooterEnd -->
