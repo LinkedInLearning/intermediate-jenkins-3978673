@@ -6,5 +6,5 @@ npm-debug.log
 .coverage
 __pycache__/
 pytest_junit.xml
-
+.idea/
 
