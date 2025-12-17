@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+    environment {
+      LOGIN = credentials('login')
+    }
+    stages {
+        stage('Test') {
+            steps {
+                withCredentials([string(credentialsId: 'apikey', variable: 'APIKEY')]) {
+                    echo "Credential values will be masked in the console log."
+                    echo env.APIKEY
+                    echo env.LOGIN
+                    echo env.LOGIN_USR
+                    echo env.LOGIN_PSW
+
+                    echo "Accessing a credential directly as a string will cause a warning"
+
+                    // This should cause a warning
+                    echo "Try to access APIKEY: ${env.APIKEY}"
+                }
+            }
+        }
+    }
+}
