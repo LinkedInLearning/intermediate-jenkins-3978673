@@ -179,13 +179,96 @@ You'll need:
 
 1. Review the list of model names returned by the command.
 
-#### Google
+#### Google Gemini (Google AI Studio)
 
-TODO
+Google provides several ways to list models, ranging from a simple web interface to programmatic retrieval via their SDK.
 
-#### Ollama
+##### Option A: Via Google AI Studio (Web Interface)
 
-TODO
+The easiest way to find the current "official" model names is through the UI.
+
+1. Log in to [Google AI Studio](https://aistudio.google.com/).
+2. Click on the **Model** dropdown in the right-hand settings sidebar.
+3. The names listed (e.g., `gemini-1.5-pro`, `gemini-2.0-flash`) are the IDs used in your code.
+
+##### Option B: Via Python SDK
+
+You can programmatically fetch all models that your API key has access to.
+
+```python
+import google.generativeai as genai
+import os
+
+genai.configure(api_key="YOUR_API_KEY")
+
+for m in genai.list_models():
+    if 'generateContent' in m.supported_generation_methods:
+        print(f"Model Name: {m.name}")
+
+```
+
+> **Note:** The `m.name` will return strings like `models/gemini-1.5-flash`. When passing these to a constructor, you often just need the part after the slash.
+
+##### Option C: Via cURL (REST API)
+
+```bash
+curl https://generativelanguage.googleapis.com/v1beta/models?key=YOUR_API_KEY
+
+```
+
+#### Ollama (Local AI)
+
+Since Ollama runs locally, the "model names" are defined by what you have downloaded to your specific machine.
+
+##### Option A: Via Command Line (CLI)
+
+To see models currently installed and ready to use:
+
+```bash
+ollama list
+
+```
+
+**Example Output:**
+| NAME | ID | SIZE | MODIFIED |
+| :--- | :--- | :--- | :--- |
+| `llama3:latest` | 365c0bd3c000 | 4.7 GB | 2 days ago |
+| `mistral:7b` | e1143494798c | 4.1 GB | 5 days ago |
+
+##### Option B: Via REST API
+
+If you are building an app that needs to check if a model is installed:
+
+```bash
+curl http://localhost:11434/api/tags
+
+```
+
+This returns a JSON object containing a `models` array with detailed metadata for each local model.
+
+##### Option C: Via Python Library
+
+```python
+import ollama
+
+response = ollama.list()
+for model in response['models']:
+    print(model['name'])
+
+```
+
+#### Vertex AI (Google Cloud)
+
+For enterprise users on Google Cloud, model names follow a specific versioning pattern.
+
+* **Stable Version:** `gemini-1.5-pro-002` (Fixed version)
+* **Latest Alias:** `gemini-1.5-pro` (Points to the most recent stable version)
+
+To see the full list in the console:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Navigate to **Vertex AI > Model Garden**.
+3. Filter by "Gemini" to see the specific IDs for each capability (Vision, Flash, Pro).
 
 ### 3. Why does the code fail?
 
