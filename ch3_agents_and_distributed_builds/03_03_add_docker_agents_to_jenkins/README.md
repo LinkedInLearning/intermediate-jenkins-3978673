@@ -44,6 +44,9 @@
 - Enable the Docker cloud
 - Save the configuration
 
+> [!IMPORTANT]
+> If you copy the Docker Host URI from the help presented in the Jenkins web interface, be sure to trim any spaces from the end when pasting the value.  A space at the end of the string will cause errors when the Docker URI is applied in the Jenkins configuration.  However, the error will only be revealed when a job is launched with a docker agent.
+
 ## Step 4: Run a Pipeline Using a Docker Agent
 
 - Create a pipeline job using the provided [Jenkinsfile for this lesson](./Jenkinsfile).
