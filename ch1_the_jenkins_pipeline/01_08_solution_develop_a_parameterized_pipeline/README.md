@@ -4,8 +4,6 @@ In this challenge, you’ll update an existing Jenkins pipeline so that it accep
 
 By the end of this challenge, you’ll have hands-on experience working with **parameterized declarative pipelines**, conditional execution, and artifact generation in Jenkins.
 
-This challenge should take **15–20 minutes** to complete.
-
 ## Challenge Tasks
 
 To complete this challenge, you will:
@@ -15,6 +13,8 @@ To complete this challenge, you will:
 - Restrict deployment behavior based on parameter values
 - Use parameter values inside pipeline steps
 - Generate and archive a parameterized report artifact
+
+This challenge should take **15–20 minutes** to complete.
 
 ## Prerequisites
 
