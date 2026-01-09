@@ -1,6 +1,20 @@
 # 01_07 Challenge: Develop a Parameterized Pipeline
 
-TODO
+In this challenge, you’ll update an existing Jenkins pipeline so that it accepts **parameters** and behaves differently based on user input. You’ll add pipeline parameters, apply conditional logic to control deployments, and generate reports using values provided at runtime.
+
+By the end of this challenge, you’ll have hands-on experience working with **parameterized declarative pipelines**, conditional execution, and artifact generation in Jenkins.
+
+## Challenge Tasks
+
+To complete this challenge, you will:
+
+- Create a new Jenkins pipeline job
+- Add parameters to a declarative Jenkins pipeline
+- Restrict deployment behavior based on parameter values
+- Use parameter values inside pipeline steps
+- Generate and archive a parameterized report artifact
+
+This challenge should take **15–20 minutes** to complete.
 
 <!-- FooterStart -->
 ---

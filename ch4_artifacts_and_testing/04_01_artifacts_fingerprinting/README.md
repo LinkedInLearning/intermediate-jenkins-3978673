@@ -1,7 +1,5 @@
 # 04_01 Artifacts and Fingerprinting
 
-TODO: Use this document at the "golden" style for the other README docs, particularly the **lab** section.
-
 ## **What is an Artifact?**
 
 - An artifact is any file a Jenkins job creates that needs to be saved after a build.
