@@ -2,6 +2,9 @@ pipeline {
     agent any
 
     // Add a tool configuration here...
+    tools {
+      maven 'maven-3.9.12'
+    }
 
     environment {
         PROJECT_DIRECTORY = "ch4_artifacts_and_testing/04_05_challenge_create_artifacts_reports"
@@ -20,8 +23,7 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}"){
                     echo "Cleaning the workspace..."
-                    // Uncomment the following line after Maven is configured as a global tool
-                    // sh 'mvn clean'
+                    sh 'mvn clean'
                 }
             }
         }
@@ -29,8 +31,7 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}"){
                     echo "Running tests..."
-                    // Uncomment the following line after Maven is configured as a global tool
-                    // sh 'mvn test'
+                    sh 'mvn test'
                 }
             }
         }
@@ -38,19 +39,18 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}/${env.PROJECT_DIRECTORY}"){
                     echo "Creating the JAR file..."
-                    // Uncomment the following line after Maven is configured as a global tool
-                    // sh 'mvn package -DskipTests'
+                    sh 'mvn package -DskipTests'
                 }
             }
         }
     }
     post {
         always {
-            echo "Collecting jUnit test results..."
-            // Add jUnit report collection here...
+            junit allowEmptyResults: true,
+                testResults: '**/TEST-com.learningjenkins.AppTest.xml'
 
-            echo "Archiving the JAR file..."
-            // Add artifact archiving here...
+            archiveArtifacts allowEmptyArchive: true,
+                artifacts: '**/hello-1.0-SNAPSHOT.jar'
         }
     }
 }
