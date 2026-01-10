@@ -1,0 +1,51 @@
+pipeline {
+  agent {
+    dockerContainer 'maven:3.9.12-eclipse-temurin-25'
+  }
+
+  environment {
+    MVN_REPO = "${WORKSPACE}/.m2/repository"
+    MVN      = "mvn -B -e -Dmaven.repo.local=${WORKSPACE}/.m2/repository"
+  }
+
+  options {
+    buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
+    timeout(time: 1, unit: 'HOURS')
+    timestamps()
+  }
+
+  stages {
+    stage('Source') {
+      steps {
+        sh 'java -version'
+        sh 'mvn -version'
+
+        git branch: 'master',
+            url: 'https://github.com/jenkins-docs/simple-java-maven-app.git'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        sh 'mkdir -p "${MVN_REPO}"'
+        sh '${MVN} test'
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh 'mkdir -p "${MVN_REPO}"'
+        sh '${MVN} -DskipTests package'
+      }
+    }
+  }
+
+  post {
+    success {
+      // Archive only the built JAR if the pipeline succeeds
+      archiveArtifacts artifacts: 'target/*.jar',
+                       fingerprint: true,
+                       allowEmptyArchive: false
+    }
+  }
+}

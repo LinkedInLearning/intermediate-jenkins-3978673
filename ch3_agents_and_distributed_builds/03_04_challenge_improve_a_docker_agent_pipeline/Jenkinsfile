@@ -1,0 +1,43 @@
+pipeline {
+  agent {
+    // Intentionally not pinned to a stable JDK tag (still works today, but not deterministic).
+    dockerContainer 'maven:3.9.12-eclipse-temurin-25'
+  }
+
+  environment {
+    // Intentionally "bad": putting the Maven repo in /tmp is fast but frequently wiped,
+    // and doesn't help much across builds for ephemeral agents.
+    MVN_REPO = "/tmp/m2"
+    MVN      = "mvn -B -Dmaven.repo.local=/tmp/m2"
+  }
+
+  options {
+    buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
+    timeout(time: 1, unit: 'HOURS')
+    timestamps()
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        // Source...
+        sh 'java -version'
+        sh 'mvn -version'
+        git branch: 'master',
+            url: 'https://github.com/jenkins-docs/simple-java-maven-app.git'
+
+        // Test...
+        sh 'mkdir -p /tmp/m2'
+        sh '${MVN} test'
+
+        // Package...
+        sh '${MVN} -DskipTests package'
+
+        // Archive...
+        archiveArtifacts artifacts: 'target/*.jar',
+            fingerprint: true,
+            allowEmptyArchive: true
+      }
+    }
+  }
+}
