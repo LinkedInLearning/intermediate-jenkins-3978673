@@ -1,14 +1,11 @@
 pipeline {
   agent {
-    // Intentionally not pinned to a stable JDK tag (still works today, but not deterministic).
     dockerContainer 'maven:3.9.12-eclipse-temurin-25'
   }
 
   environment {
-    // Intentionally "bad": putting the Maven repo in /tmp is fast but frequently wiped,
-    // and doesn't help much across builds for ephemeral agents.
-    MVN_REPO = "/tmp/m2"
-    MVN      = "mvn -B -Dmaven.repo.local=/tmp/m2"
+    MVN_REPO = "${WORKSPACE}/.m2/repository"
+    MVN      = "mvn -B -e -Dmaven.repo.local=${WORKSPACE}/.m2/repository"
   }
 
   options {
@@ -16,6 +13,7 @@ pipeline {
     timeout(time: 1, unit: 'HOURS')
     timestamps()
   }
+
 
   stages {
     stage('Build') {
@@ -27,7 +25,7 @@ pipeline {
             url: 'https://github.com/jenkins-docs/simple-java-maven-app.git'
 
         // Test...
-        sh 'mkdir -p /tmp/m2'
+        sh 'mkdir -p ${MVN_REPO}'
         sh '${MVN} test'
 
         // Package...

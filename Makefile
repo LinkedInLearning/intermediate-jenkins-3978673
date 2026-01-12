@@ -18,8 +18,8 @@ all: clean chapterlist-touch update-titles footer spellcheck lint
 lint:
 	#-@docker pull ghcr.io/managedkaos/summarize-markdown-lint:main
 	#-@docker pull davidanson/markdownlint-cli2:v0.20.0
-	-@docker run -v $(PWD):/workdir davidanson/markdownlint-cli2:v0.20.0 $(README_FILES) 2>&1 | \
-		docker run --interactive ghcr.io/managedkaos/summarize-markdown-lint:main
+	-@docker run --rm -v $(PWD):/workdir davidanson/markdownlint-cli2:v0.20.0 $(README_FILES) 2>&1 | \
+		docker run --rm --interactive ghcr.io/managedkaos/summarize-markdown-lint:main
 
 rawlint:
 	-@docker run -v $(PWD):/workdir davidanson/markdownlint-cli2:v0.20.0 $(README_FILES) 2>&1
