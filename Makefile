@@ -70,6 +70,9 @@ chapterlist-touch:
 overlay:
 	@find . -type f -name README.md | sort | sed 's/^\.\///' | sed 's/\// > /g' | sed 's/ > README.md//'
 
+overlay-chapter-list:
+	@sed 's/\// > /g' CHAPTER_LIST.txt
+
 clean:
 	find . -type f -name \*.pdf -not \( -path '*/github-actions-cheat-sheet.pdf' \) -exec rm -vf {} \;
 	find . -type f -name \*.bak -exec rm -vf {} \;

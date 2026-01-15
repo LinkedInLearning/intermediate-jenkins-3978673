@@ -128,5 +128,5 @@ Move on to the next lesson and begin working with Jenkins pipelines.
 
 <!-- FooterStart -->
 ---
-[← 00_01 From Code to Production With Jenkins](../00_01_from_code_to_production_with_jenkins/README.md) | [01_01 Create a Pipeline Project →](../../ch1_the_jenkins_pipeline/01_01_create_a_pipeline_project/README.md)
+[← 00_01 From Code to Production With Jenkins](../00_01_from_code_to_production_with_jenkins/README.md) | [01_01 Create a Pipeline Project →](../../ch1_pipelines/01_01_create_a_pipeline_project/README.md)
 <!-- FooterEnd -->
