@@ -180,11 +180,6 @@ This lab should take approximately **15 to 20 minutes** to complete.
 > [!TIP]
 > Use the fingerprint view to trace artifact flow across pipelines.
 
-## **Next Steps**
-
-TODO: Write a better closing for this document.
-Learn how to publish reports detailing tests and tracking code coverage.
-
 <!-- FooterStart -->
 ---
 [← 03_05 Solution: Improve a Docker Agent Pipeline](../../ch3_distributed_builds/03_05_solution_improve_a_docker_agent_pipeline/README.md) | [04_02 Publish Test Results and Code Coverage Reports →](../04_02_publish_reports/README.md)
