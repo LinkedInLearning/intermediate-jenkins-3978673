@@ -90,6 +90,8 @@ You have completed this challenge when:
 * A pipeline successfully runs using a Docker-based agent
 * The pipeline is organized into clear stages and steps
 
+Compare your implementation to the solution: [Jenkinsfile](./Jenkinsfile).
+
 <!-- FooterStart -->
 ---
 [← 03_04 Challenge: Improve a Docker Agent Pipeline](../03_04_challenge_improve_a_docker_agent_pipeline/README.md) | [04_01 Artifacts and Fingerprinting →](../../ch4_artifacts_and_testing/04_01_artifacts_fingerprinting/README.md)
