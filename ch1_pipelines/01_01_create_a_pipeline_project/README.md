@@ -23,15 +23,6 @@ Before you begin, make sure you have:
 - Permission to create new jobs
 - A user account logged into Jenkins
 
-## Lab Tasks
-
-To complete this lab, you will:
-
-- Create a new Pipeline job
-- Configure the job using a sample pipeline script
-- Run the pipeline
-- Review the pipeline output and visualization
-
 ## Instructions
 
 ### Step 1: Create a New Pipeline Job
