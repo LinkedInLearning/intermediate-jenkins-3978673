@@ -33,10 +33,10 @@ In this lab, you will:
 
 ## Prerequisites
 
-Before starting:
+Before starting, make sure:
 
 - [Your **First-Pipeline** job already exists](../../ch1_pipelines/01_01_create_a_pipeline_project/README.md)
-- You have access to the course exercise files repository (public)
+- You have access to the course exercise files repository
 
 ## Instructions
 
