@@ -1,6 +1,6 @@
 # 02_01 Pipeline as Code With Jenkinsfile
 
-Anything you configure in the Jenkins UI can typically be captured in the Jenkinsfile.
+Anything you configure in the Jenkins UI can typically be captured in a `Jenkinsfile`.
 
 - A **Jenkinsfile** is a text file that defines a pipeline
 - It uses declarative or scripted pipeline syntax
