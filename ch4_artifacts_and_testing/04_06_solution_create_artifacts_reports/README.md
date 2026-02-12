@@ -73,11 +73,6 @@ Before you begin, make sure you have:
 
 Compare your implementation to the solution: [Jenkinsfile](./Jenkinsfile).
 
----
-
-[← 04_05 Challenge: Create artifacts and Reports](../04_05_challenge_create_artifacts_reports/README.md) | [05_01 Secure Jenkins With User accounts →](../../ch5_securing_jenkins/05_01_secure_jenkins_with_user_accounts/README.md)
-<!-- FooterEnd -->
-
 <!-- FooterStart -->
 ---
 [← 04_05 Challenge: Create artifacts and Reports](../04_05_challenge_create_artifacts_reports/README.md) | [05_01 Secure Jenkins With User accounts →](../../ch5_securing_jenkins/05_01_secure_jenkins_with_user_accounts/README.md)
