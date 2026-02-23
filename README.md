@@ -50,9 +50,8 @@ To get started:
 
 * Check out my other courses on [LinkedIn Learning](https://www.linkedin.com/learning/instructors/michael-jenkins).
 
-[lil-course-url]: https://www.linkedin.com/learning/
-[lil-thumbnail-url]: https://media.licdn.com/dms/image/v2/D4E0DAQG0eDHsyOSqTA/learning-public-crop_675_1200/B4EZVdqqdwHUAY-/0/1741033220778?e=2147483647&v=beta&t=FxUDo6FA8W8CiFROwqfZKL_mzQhYx9loYLfjN-LNjgA
-
+[lil-course-url]: https://www.linkedin.com/learning/intermediate-jenkins-automate-integrate-and-secure-ci-cd-workflows-at-scale
+[lil-thumbnail-url]: https://media.licdn.com/dms/image/v2/D4D0DAQEDVgLCVeGAvQ/learning-public-crop_675_1200/B4DZvz7mc8JwAY-/0/1769324046816?e=2147483647&v=beta&t=XEGcqxHZ_4MT2HQkWzM-YVJoaNoZg5f9sG0OGYvlE_Y
 <!-- FooterStart -->
 ---
 [00_01 From Code to Production With Jenkins →](ch0_introduction/00_01_from_code_to_production_with_jenkins/README.md)
